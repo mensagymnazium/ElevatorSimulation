@@ -12,7 +12,7 @@ public static class Program
 	public const int SingleRandomSeed = 42017;
 
 	// Tournament configuration
-	public const bool TournamentMode = false; // Set to false for single strategy testing
+	public const bool TournamentMode = true; // Set to false for single strategy testing
 	public static readonly int[] TournamentSeeds = { 42017, 12345, 99999, 54321, 77777 };
 
 	public static void Main()
@@ -28,7 +28,7 @@ public static class Program
 		else
 		{
 			// Test single strategy
-			RunSingleSimulation("JENDA STRATEGY", new JendaSecondStrategy(), building);
+			RunSingleSimulation("JENDA STRATEGY", new JendaChatGPTStrategy(), building);
 			Console.WriteLine("\n");
 			//RunSingleSimulation("NEAREST FIRST STRATEGY", new NearestFirstStrategy(), building);
 		}
