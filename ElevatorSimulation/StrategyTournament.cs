@@ -10,6 +10,7 @@ public class StrategyTournament
 {
 	private readonly Building _building;
 	private readonly int[] _seeds;
+	private readonly SimulationRunner _runner;
 
 	/// <summary>
 	/// Creates a new tournament.
@@ -20,6 +21,7 @@ public class StrategyTournament
 	{
 		_building = building;
 		_seeds = seeds;
+		_runner = new SimulationRunner(building);
 	}
 
 	/// <summary>
@@ -105,20 +107,12 @@ public class StrategyTournament
 	/// </summary>
 	private Statistics RunSingleSimulation(IElevatorStrategy strategy, int seed)
 	{
-		var random = new Random(seed);
-		var elevator = new ElevatorSystem(strategy, _building)
-		{
-			SilentMode = true // Suppress console output during tournament
-		};
-
-		// Generate random requests
-		var randomRequests = Enumerable.Range(0, Program.TimeForRequests)
-			.Select(_ => GenerateRandomRequest(_building, random))
-			.ToList();
-
-		elevator.RunSimulation(randomRequests);
-
-		return elevator.Statistics;
+		return _runner.RunSimulation(
+			strategy,
+			seed,
+			Program.TimeForRequests,
+			Program.RequestDensityPercent,
+			silentMode: true);
 	}
 
 	/// <summary>
@@ -140,19 +134,6 @@ public class StrategyTournament
 			totalCompleted > 0 ? totalTotalTime / totalCompleted : 0,
 			totalCumulativeTime
 		);
-	}
-
-	/// <summary>
-	/// Generates a random request with given probability.
-	/// </summary>
-	private static RiderRequest GenerateRandomRequest(Building building, Random random)
-	{
-		if (random.NextDouble() > Program.RequestDensityPercent)
-		{
-			return null;
-		}
-
-		return building.CreateRandomRequest(random, 0);
 	}
 
 	/// <summary>
