@@ -1,0 +1,13 @@
+namespace ElevatorSimulation.Strategies;
+
+/// <summary>
+/// Luigi part two: electric boogaloo
+/// —MgJbr
+/// </summary>
+public class MgJbrSabotageStrategy : IElevatorStrategy
+{
+	public MoveResult DecideNextMove(ElevatorSystem elevator)
+	{
+		return DecideNextMove(elevator);
+	}
+}

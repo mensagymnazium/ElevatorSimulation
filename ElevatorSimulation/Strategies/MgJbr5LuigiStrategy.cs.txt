@@ -1,0 +1,14 @@
+namespace ElevatorSimulation.Strategies;
+
+/// <summary>
+/// Luigi wins by doing absolutely nothing
+/// (see https://knowyourmeme.com/memes/luigi-wins-by-doing-absolutely-nothing)
+/// —MgJbr
+/// </summary>
+public class MgJbrLuigiStrategy : IElevatorStrategy
+{
+	public MoveResult DecideNextMove(ElevatorSystem elevator)
+	{
+		return MoveResult.NoAction;
+	}
+}
