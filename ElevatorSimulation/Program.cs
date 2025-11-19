@@ -28,9 +28,9 @@ public static class Program
 		else
 		{
 			// Test single strategy
-			RunSingleSimulation("FIFO STRATEGY", new FifoStrategy(), building);
+			RunSingleSimulation("JENDA STRATEGY", new JendaChatGPTStrategy(), building);
 			Console.WriteLine("\n");
-			RunSingleSimulation("NEAREST FIRST STRATEGY", new NearestFirstStrategy(), building);
+			//RunSingleSimulation("NEAREST FIRST STRATEGY", new NearestFirstStrategy(), building);
 		}
 	}
 
