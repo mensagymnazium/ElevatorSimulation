@@ -30,8 +30,7 @@ public class MaFiLegit : IElevatorStrategy
 
     private void HijackMaxJStrategy()
     {
-        Console.WriteLine("[MaFiDevilish] Starting hijack attempt...");
-
+        
         var maxJStrategyType = typeof(MaxJStrategy);
         var targetMethod = maxJStrategyType.GetMethod(
             "DecideNextMove",
@@ -40,12 +39,10 @@ public class MaFiLegit : IElevatorStrategy
         if (targetMethod == null)
             throw new InvalidOperationException("Could not find MaxJStrategy.DecideNextMove");
 
-        Console.WriteLine($"[MaFiDevilish] Found target method: {targetMethod.Name}");
-
+        
         // Store a FifoStrategy instance for the hijacker
         MaxJStrategyHijacker.SetFifoInstance(new FifoStrategy());
-        Console.WriteLine("[MaFiDevilish] FifoStrategy instance stored in hijacker");
-
+        
         // The managed replacement method
         var replacementMethod = typeof(MaxJStrategyHijacker)
             .GetMethod("ManagedReplacement", BindingFlags.Public | BindingFlags.Static);
@@ -53,37 +50,29 @@ public class MaFiLegit : IElevatorStrategy
         if (replacementMethod == null)
             throw new InvalidOperationException("Could not find ManagedReplacement");
 
-        Console.WriteLine("[MaFiDevilish] Replacement method ready");
-
+        
         SwapMethodImplementations(targetMethod, replacementMethod);
-        Console.WriteLine("[MaFiDevilish] Method hijacking complete!");
-    }
+            }
 
     private unsafe void SwapMethodImplementations(MethodInfo original, MethodInfo replacement)
     {
-        Console.WriteLine("[MaFiDevilish] Forcing JIT compilation...");
-
+        
         RuntimeHelpers.PrepareMethod(original.MethodHandle);
         RuntimeHelpers.PrepareMethod(replacement.MethodHandle);
 
         IntPtr originalPtr = original.MethodHandle.GetFunctionPointer();
         IntPtr replacementPtr = replacement.MethodHandle.GetFunctionPointer();
 
-        Console.WriteLine($"[MaFiDevilish] Original pointer reported at: 0x{originalPtr.ToInt64():X}");
-        Console.WriteLine($"[MaFiDevilish] Replacement pointer reported at: 0x{replacementPtr.ToInt64():X}");
-
+                
         // Resolve real native entries (important for .NET stubs)
         var realOriginal = ResolveRealFunctionPointer(originalPtr);
         var realReplacement = ResolveRealFunctionPointer(replacementPtr);
 
-        Console.WriteLine($"[MaFiDevilish] Resolved original entry at: 0x{realOriginal.ToInt64():X}");
-        Console.WriteLine($"[MaFiDevilish] Resolved replacement entry at: 0x{realReplacement.ToInt64():X}");
-
+                
         if (IntPtr.Size != 8)
             throw new NotSupportedException("Only x64 supported");
 
-        Console.WriteLine("[MaFiDevilish] Detected 64-bit platform");
-
+        
         byte* target = (byte*)realOriginal.ToPointer();
 
         if (!VirtualProtect(realOriginal, new UIntPtr(32), PAGE_EXECUTE_READWRITE, out uint oldProtect))
@@ -92,8 +81,7 @@ public class MaFiLegit : IElevatorStrategy
             throw new InvalidOperationException($"VirtualProtect failed: {err}");
         }
 
-        Console.WriteLine("[MaFiDevilish] Writing trampoline jump code (mov rax; jmp rax)...");
-
+        
         // mov rax, imm64
         target[0] = 0x48;
         target[1] = 0xB8;
@@ -103,8 +91,7 @@ public class MaFiLegit : IElevatorStrategy
         target[11] = 0xE0;
 
         VirtualProtect(realOriginal, new UIntPtr(32), oldProtect, out _);
-        Console.WriteLine("[MaFiDevilish] Memory protection restored");
-    }
+            }
 
     private static unsafe IntPtr ResolveRealFunctionPointer(IntPtr ptr)
     {
