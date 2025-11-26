@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ElevatorSimulation": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
