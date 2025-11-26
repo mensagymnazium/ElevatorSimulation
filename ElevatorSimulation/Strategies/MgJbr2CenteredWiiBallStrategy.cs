@@ -4,7 +4,7 @@ namespace ElevatorSimulation.Strategies;
 /// Wii Ball, but the elevator *loves* being in the middle.
 /// —MgJbr
 /// </summary>
-public class MgJbr2CenteredWiiBallStrategy : IElevatorStrategy
+public class MgJbr2CenteredWiiBallStrategy // : IElevatorStrategy
 {
 	public MoveResult DecideNextMove(ElevatorSystem elevator)
 	{

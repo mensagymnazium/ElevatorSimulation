@@ -56,7 +56,7 @@ namespace ElevatorSimulation.Strategies;
 /// doooodxddxxdxxcNMMMxlMMMM:lMMWcXMMdoolXMMMMMM;MMMo0MMxKMMMMlMMMMW:oddddddddddddd
 /// —MgJbr
 /// </summary>
-public class MgJbr1WiiBallStrategy : IElevatorStrategy
+public class MgJbr1WiiBallStrategy //: IElevatorStrategy
 {
 	public MoveResult DecideNextMove(ElevatorSystem elevator)
 	{

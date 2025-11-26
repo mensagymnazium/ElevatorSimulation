@@ -2,49 +2,50 @@ namespace ElevatorSimulation.Strategies;
 
 public class JendaStrategy : IElevatorStrategy
 {
-    private Random rn = new Random();
-    private int dir = 0;
-    
-    public MoveResult DecideNextMove(ElevatorSystem elevator)
-    {
-        int min = elevator.Building.MinFloor;
-        int max = elevator.Building.MaxFloor;
-        int size = max - min + 1;
+	private Random rn = new Random();
+	private int dir = 0;
 
-        // Pending requests
-        List<RiderRequest>[] requests = new List<RiderRequest>[size];
-        for (int i = 0; i < size; i++)
-            requests[i] = new List<RiderRequest>();
+	public MoveResult DecideNextMove(ElevatorSystem elevator)
+	{
+		int min = elevator.Building.MinFloor;
+		int max = elevator.Building.MaxFloor;
+		int size = max - min + 1;
 
-        foreach (var r in elevator.PendingRequests)
-            requests[r.From - min].Add(r);
+		// Pending requests
+		List<RiderRequest>[] requests = new List<RiderRequest>[size];
+		for (int i = 0; i < size; i++)
+			requests[i] = new List<RiderRequest>();
 
-        // Active riders
-        List<RiderRequest>[] requestsE = new List<RiderRequest>[size];
-        for (int i = 0; i < size; i++)
-            requestsE[i] = new List<RiderRequest>();
+		foreach (var r in elevator.PendingRequests)
+			requests[r.From - min].Add(r);
 
-        foreach (var r in elevator.ActiveRiders)
-            requestsE[r.To - min].Add(r);
+		// Active riders
+		List<RiderRequest>[] requestsE = new List<RiderRequest>[size];
+		for (int i = 0; i < size; i++)
+			requestsE[i] = new List<RiderRequest>();
 
-        int pos = elevator.CurrentElevatorFloor - min;
+		foreach (var r in elevator.ActiveRiders)
+			requestsE[r.To - min].Add(r);
 
-        if (dir == 0 && elevator.CurrentElevatorFloor == max)
-            dir = 1;
+		int pos = elevator.CurrentElevatorFloor - min;
 
-        if (dir == 1 && elevator.CurrentElevatorFloor == min)
-            dir = 0;
+		if (dir == 0 && elevator.CurrentElevatorFloor == max)
+			dir = 1;
 
-        if (rn.Next(1, 10000) == 2)
-            قنبلة();
-        
-        if (requests[pos].Count == 0 &&  requestsE[pos].Count == 0)
-            return dir == 0 ? MoveResult.MoveUp : MoveResult.MoveDown;
+		if (dir == 1 && elevator.CurrentElevatorFloor == min)
+			dir = 0;
 
-        return MoveResult.OpenDoors;
-    }
+		if (rn.Next(1, 10000) == 2)
+			قنبلة();
 
-    void قنبلة() {
-        قنبلة();
-    }
+		if (requests[pos].Count == 0 && requestsE[pos].Count == 0)
+			return dir == 0 ? MoveResult.MoveUp : MoveResult.MoveDown;
+
+		return MoveResult.OpenDoors;
+	}
+
+	void قنبلة()
+	{
+		//قنبلة();
+	}
 }

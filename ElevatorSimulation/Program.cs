@@ -9,11 +9,11 @@ public static class Program
 	public const double RequestDensityPercent = 0.30;
 
 	// Single simulation seed
-	public const int SingleRandomSeed = 42017;
+	public const int RandomSeed = 42017;
 
 	// Tournament configuration
 	public const bool TournamentMode = true; // Set to false for single strategy testing
-	public static readonly int[] TournamentSeeds = { 42017, 12345, 99999, 54321, 77777 };
+	public const int TournamentScenariosCount = 10000;
 
 	public static void Main()
 	{
@@ -39,6 +39,9 @@ public static class Program
 	/// </summary>
 	private static void RunTournament(Building building)
 	{
+		var random = new Random(RandomSeed);
+		var TournamentSeeds = Enumerable.Range(1, TournamentScenariosCount).Select(_ => random.Next()).ToArray();
+
 		Console.WriteLine("🏁 STARTING STRATEGY TOURNAMENT");
 		Console.WriteLine($"   Testing with {TournamentSeeds.Length} different scenarios (seeds)");
 		Console.WriteLine();
@@ -72,7 +75,7 @@ public static class Program
 		var runner = new SimulationRunner(building);
 		runner.RunSimulation(
 			strategy,
-			SingleRandomSeed,
+			RandomSeed,
 			TimeForRequests,
 			RequestDensityPercent,
 			silentMode: false,
